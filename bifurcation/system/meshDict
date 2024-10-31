@@ -1,0 +1,120 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                |
+| \\      /  F ield         | cfMesh: A library for mesh generation          |
+|  \\    /   O peration     |                                                |
+|   \\  /    A nd           | Author: Franjo Juretic                         |
+|    \\/     M anipulation  | E-mail: franjo.juretic@c-fields.com            |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version   2.0;
+    format    patch0;
+    class     dictionary;
+    location  "system";
+    object    meshDict;
+}
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+surfaceFile "constant/triSurface/exhaust_manifold_features.fms";
+
+// Fluid mesh levels
+maxCellSize 3.0;
+boundaryCellSize 1.5;
+boundaryCellSizeRefinementThickness 1;
+
+//edgeMehRefinement
+//{
+//    junction1
+//    {
+//        edgeFile    "constant/triSurface/junctionEdges1.vtk";
+//        //additionalRefinementLevels  4;
+//        cellSize		            0.5;
+//        //refinementThickness         1;
+//    }
+//    junction2
+//    {
+//        edgeFile    "constant/triSurface/junctionEdges2.vtk";
+//        //additionalRefinementLevels  4;
+//        cellSize		            0.5;
+//        //refinementThickness         1;
+//    }
+//}
+
+//localRefinement
+//{
+//    "patch0_0"
+//    {
+//        // specified patch size on the patch
+//        cellSize 1.0;
+
+//        // number of refinement levels
+//        // to maximal cell size
+//        //additionalRefinementLevels 3;
+
+//        // thickness of the refinement region
+//        // away from the patch
+//        refinementThickness 1;
+//    }
+//}
+
+//surfaceMeshRefinement
+//{
+//    neck
+//    {
+//        surfaceFile		"surfaceMesh/refinementRegions.stl";
+//        additionalRefinementLevels 4;
+//        cellSize		0.04;
+//        refinementThickness 0.2;
+//    }
+//}
+
+boundaryLayers
+{
+    patchBoundaryLayers
+    {
+        patch0_0
+        {
+            nLayers	5;
+            thicknessRatio	1.15;
+            //maxFirstLayerThickness ;
+        }
+    }
+
+    optimiseLayer	        50;
+
+    optimisationParameters
+    {
+        nSmoothNormals 		40;
+        maxNumIterations 	50;
+        reCalculateNormals 	1;
+        relThicknessTol		0.3;
+    }
+}
+
+renameBoundary
+{
+    newPatchNames
+    {
+        "patch0_[0,1]"
+        {
+            newName		wall;
+            type		wall;
+        }
+
+        patch0_2
+        {
+            newName		outlet;
+            type		patch;
+        }
+
+        "patch0_[3,4,5,6]"
+        {
+            newName		inlets;
+            type		patch;
+        }
+    }
+}
+
+// ************************************************************************* //

@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# Gerar a malha computacional
+blockMesh
+
+# Executar o simpleFoam com o PyFoam
+pyFoamPlotRunner.py simpleFoam
+
+# Agora carrege no ParaView para visualizar
+
+#------------------------------------------------------------------------------
